@@ -1,0 +1,14 @@
+.filter {
+    background-color: #a9c9d5;
+    border-radius: 5px;
+}
+
+.deleteBtn {
+    background-color: rgba(212, 56, 56, 0.83);
+    border-radius: 10px;
+    margin-left: 5px;
+}
+
+.addBtn {
+    background-color: rgba(78, 142, 31, 0.83);
+}

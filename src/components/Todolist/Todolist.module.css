@@ -1,0 +1,19 @@
+.doneTask {
+    opacity: 0.3;
+}
+
+.buttons {
+    margin: 10px 0 0 10px;
+}
+
+.buttons > button {
+    margin: 0 5px;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+}
+.title > button {
+    margin-right: 10px;
+}

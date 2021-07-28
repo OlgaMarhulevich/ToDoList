@@ -1,0 +1,12 @@
+.errorTitle {
+    color: #c91010;
+    margin-top: 5px;
+}
+
+.errorBox {
+    border: 1px solid #c91010;
+}
+
+.input {
+    margin-right: 5px;
+}
