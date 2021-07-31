@@ -1,8 +1,12 @@
 .App {
   padding: 30px;
-  display: flex;
 }
 
-.App > div {
+.App > div > div {
   margin-right: 50px;
+}
+
+.tdls {
+  display: flex;
+  margin-top: 30px;
 }

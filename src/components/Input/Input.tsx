@@ -3,8 +3,7 @@ import {Button} from "../Button/Button";
 import s from './Input.module.css';
 
 type InputPropsType = {
-    callback: (task: string, todoListID: string) => void
-    tdlID: string
+    callback: (task: string) => void
 }
 
 export const Input = (props: InputPropsType) => {
@@ -18,7 +17,7 @@ export const Input = (props: InputPropsType) => {
     }
     const addTask = () => {
         if (newTask.trim()) {
-            props.callback(newTask.trim(), props.tdlID)
+            props.callback(newTask.trim())
             setNewTask('')
         } else {
             setError(true)

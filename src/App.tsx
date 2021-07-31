@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 import {Todolist} from './components/Todolist/Todolist';
 import {v1} from 'uuid';
+import {Input} from "./components/Input/Input";
 
 export type FilterValuesType = "all" | "active" | "completed";
 
@@ -56,9 +57,15 @@ function App() {
     setTasks({...tasks});
   }
 
-  const updateTask = (taskID: string, todoListID: string) => {
+  const changeTaskStatus = (isDone: boolean, taskID: string, todoListID: string) => {
     tasks[todoListID] = tasks[todoListID]
-        .map(t => t.id === taskID ? {...t, isDone: !t.isDone} : t)
+        .map(t => t.id === taskID ? {...t, isDone} : t)
+    setTasks({...tasks})
+  }
+
+  const changeTaskTitle = (title: string, taskID: string, todoListID: string) => {
+    tasks[todoListID] = tasks[todoListID]
+        .map(t => t.id === taskID ? {...t, title} : t)
     setTasks({...tasks})
   }
 
@@ -68,10 +75,22 @@ function App() {
     setTodoList([...todoLists])
   }
 
+  const addTodoList = (title: string) => {
+    const todoListID = v1()
+    const newTodoList = {id: todoListID, title: title, filter: 'all'} as TodoListType
+    setTodoList([ ...todoLists, newTodoList] )
+    setTasks({ ...tasks, [todoListID]: [] })
+  }
+
   const removeTodoList = (todoListID: string) => {
     todoLists = todoLists.filter(tdl => tdl.id !== todoListID)
     setTodoList([...todoLists])
     delete tasks[todoListID]
+  }
+
+  const changeTodoListTitle = (title: string, todoListID: string) => {
+    todoLists = todoLists.map(tdl => tdl.id === todoListID ? {...tdl, title} : tdl)
+    setTodoList([...todoLists])
   }
 
   const getTasksForTodoList = (tdl: TodoListType) => {
@@ -94,14 +113,16 @@ function App() {
           tasks={getTasksForTodoList(tdl)}
           removeTask={removeTask}
           addTask={addTask}
-          updateTask={updateTask}
+          changeTaskStatus={changeTaskStatus}
           changeTodoListFilter={changeTodoListFilter}
           removeTodoList={removeTodoList}
-      />)
+          changeTodoListTitle={changeTodoListTitle}
+          changeTaskTitle={changeTaskTitle}/>)
 
   return (
       <div className="App">
-        { tdlComponents }
+        <Input callback={addTodoList}/>
+        <div className="tdls"> {tdlComponents} </div>
       </div>
   );
 }
