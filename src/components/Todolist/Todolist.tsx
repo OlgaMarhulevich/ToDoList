@@ -1,10 +1,10 @@
 import React from 'react';
 import {FilterValuesType, TaskType} from '../../App';
-import {Button} from "../Button/Button";
 import {Input} from "../Input/Input";
 import s from './Todolist.module.css';
-import {Checkbox} from "../Checkbox/Checkbox";
 import {EditableSpan} from "../EditableSpan/EditableSpan";
+import {Button, Checkbox, IconButton} from "@material-ui/core";
+import {Delete} from "@material-ui/icons";
 
 type PropsType = {
     id: string
@@ -25,7 +25,9 @@ export function Todolist(props: PropsType) {
 
     return <div>
         <div className={s.title}>
-            <Button title={'x'} callBack={() => props.removeTodoList(props.id)}/>
+            <IconButton aria-label="delete" size={"small"} onClick={() => props.removeTodoList(props.id)}>
+                <Delete/>
+            </IconButton>
             <EditableSpan title={props.title} changeTitle={(title) => props.changeTodoListTitle(title, props.id)}/>
         </div>
 
@@ -34,23 +36,42 @@ export function Todolist(props: PropsType) {
         </div>
 
         <div className={s.buttons}>
-            <Button filter={props.filter} title={'All'}
-                    callBack={() => props.changeTodoListFilter("all", props.id)}/>
-            <Button filter={props.filter} title={'Active'}
-                    callBack={() => props.changeTodoListFilter("active", props.id)}/>
-            <Button filter={props.filter} title={'Completed'}
-                    callBack={() => props.changeTodoListFilter("completed", props.id)}/>
+            <Button
+                size={"small"}
+                onClick={() => props.changeTodoListFilter("all", props.id)}
+                variant={"contained"}
+                color={props.filter === "all" ? "secondary" : "primary"}>All</Button>
+            <Button
+                size={"small"}
+                onClick={() => props.changeTodoListFilter("active", props.id)}
+                variant={"contained"}
+                color={props.filter === "active" ? "secondary" : "primary"}>Active</Button>
+            <Button
+                size={"small"}
+                onClick={() => props.changeTodoListFilter("completed", props.id)}
+                variant={"contained"}
+                color={props.filter === "completed" ? "secondary" : "primary"}>Completed</Button>
         </div>
 
         <ul>
             {props.tasks.map(task => {
-                    const removeTask = () => { props.removeTask(task.id, props.id) }
+                    const removeTask = () => {
+                        props.removeTask(task.id, props.id)
+                    }
+                    const changeTaskStatus = (event: React.ChangeEvent<HTMLInputElement>) =>
+                        props.changeTaskStatus(event.currentTarget.checked, task.id, props.id)
                     return (
-                        <li className={ task.isDone ? s.doneTask : '' } key={task.id}>
-                            <Checkbox changeTaskStatus={(isDone) => props.changeTaskStatus(isDone, task.id, props.id)}
-                                      isDone={task.isDone}/>
-                            <EditableSpan title={task.title} changeTitle={(title) => props.changeTaskTitle(title, task.id, props.id)}/>
-                            <Button title={'x'} callBack={removeTask}/>
+                        <li className={task.isDone ? s.doneTask : ''} key={task.id}>
+                            <Checkbox checked={task.isDone}
+                                      onChange={changeTaskStatus}
+                                      size={"small"}
+                                      color="primary"/>
+                            <EditableSpan title={task.title}
+                                          changeTitle={(title) => props.changeTaskTitle(title, task.id, props.id)}/>
+
+                            <IconButton aria-label="delete" size={"small"} onClick={removeTask}>
+                                <Delete/>
+                            </IconButton>
                         </li>
                     )
                 }

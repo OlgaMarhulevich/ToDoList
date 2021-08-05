@@ -1,12 +1,16 @@
-.App {
-  padding: 30px;
+.appBar {
+    justify-content: space-between;
 }
-
-.App > div > div {
-  margin-right: 50px;
+.addTdlGrid {
+    padding: 15px;
+    margin: 20px 0;
 }
-
-.tdls {
-  display: flex;
-  margin-top: 30px;
+.tdlsGrid {
+    padding: 15px;
+}
+.tdl {
+    padding: 15px;
+    height: 400px;
+    width: 300px;
+    overflow: scroll;
 }

@@ -1,5 +1,9 @@
-.doneTask {
-    opacity: 0.3;
+.doneTask > span {
+    color: #112698;
+}
+
+li {
+    list-style: none;
 }
 
 .buttons {
@@ -15,6 +19,8 @@
     align-items: center;
     margin-bottom: 20px;
     font-weight: bold;
+    font-size: 22px;
+    color: #2627b0;
 }
 .title > button {
     margin-right: 10px;
