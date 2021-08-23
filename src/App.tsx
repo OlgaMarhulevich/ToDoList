@@ -3,7 +3,7 @@ import './App.css';
 import {Todolist} from './components/Todolist/Todolist';
 import {v1} from 'uuid';
 import {Input} from "./components/Input/Input";
-import {AppBar, Button, Container, Grid, Icon, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
+import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
 
 export type FilterValuesType = "all" | "active" | "completed";
@@ -53,28 +53,19 @@ function App() {
         tasks[todoListID] = [newTask, ...tasks[todoListID]]
         setTasks({...tasks});
     }
-
     const removeTask = (id: string, todoListID: string) => {
         tasks[todoListID] = tasks[todoListID].filter(task => task.id !== id);
         setTasks({...tasks});
     }
-
     const changeTaskStatus = (isDone: boolean, taskID: string, todoListID: string) => {
         tasks[todoListID] = tasks[todoListID]
             .map(t => t.id === taskID ? {...t, isDone} : t)
         setTasks({...tasks})
     }
-
     const changeTaskTitle = (title: string, taskID: string, todoListID: string) => {
         tasks[todoListID] = tasks[todoListID]
             .map(t => t.id === taskID ? {...t, title} : t)
         setTasks({...tasks})
-    }
-
-    const changeTodoListFilter = (filter: FilterValuesType, todoListID: string) => {
-        todoLists = todoLists
-            .map(tdl => tdl.id === todoListID ? {...tdl, filter} : tdl)
-        setTodoList([...todoLists])
     }
 
     const addTodoList = (title: string) => {
@@ -83,13 +74,16 @@ function App() {
         setTodoList([...todoLists, newTodoList])
         setTasks({...tasks, [todoListID]: []})
     }
-
     const removeTodoList = (todoListID: string) => {
         todoLists = todoLists.filter(tdl => tdl.id !== todoListID)
         setTodoList([...todoLists])
         delete tasks[todoListID]
     }
-
+    const changeTodoListFilter = (filter: FilterValuesType, todoListID: string) => {
+        todoLists = todoLists
+            .map(tdl => tdl.id === todoListID ? {...tdl, filter} : tdl)
+        setTodoList([...todoLists])
+    }
     const changeTodoListTitle = (title: string, todoListID: string) => {
         todoLists = todoLists.map(tdl => tdl.id === todoListID ? {...tdl, title} : tdl)
         setTodoList([...todoLists])
