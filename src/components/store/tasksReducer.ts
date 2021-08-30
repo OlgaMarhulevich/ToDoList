@@ -9,7 +9,7 @@ export const CHANGE_TASK_TITLE = 'CHANGE-TASK-TITLE'
 
 const initialState: TasksStateType = {}
 
-export const tasksReducer = (state: TasksStateType = initialState, action: ActionType): TasksStateType => {
+export const tasksReducer = (state = initialState, action: ActionType): TasksStateType => {
     switch (action.type) {
         case ADD_TASK:
             return {
@@ -41,7 +41,7 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
             delete copyState[action.todoListID]
             return copyState
         default:
-            return {...state}
+            return state
     }
 }
 
