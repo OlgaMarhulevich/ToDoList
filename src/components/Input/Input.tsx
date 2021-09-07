@@ -3,21 +3,22 @@ import React, {ChangeEvent, KeyboardEvent, useState} from "react"
 import {AddBox} from "@material-ui/icons";
 
 type InputPropsType = {
-    callback: (task: string) => void
+    addItem: (task: string) => void
 }
 
-export const Input = (props: InputPropsType) => {
+export const Input = React.memo((props: InputPropsType) => {
+    console.log('input rendering')
 
     let [Title, setTitle] = useState('');
     let [error, setError] = useState(false)
 
     const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         setTitle(event.currentTarget.value);
-        setError(false)
+        error && setError(false)
     }
     const addTask = () => {
         if (Title.trim()) {
-            props.callback(Title.trim())
+            props.addItem(Title.trim())
             setTitle('')
         } else {
             setError(true)
@@ -54,4 +55,4 @@ export const Input = (props: InputPropsType) => {
             </IconButton>
         </div>
     )
-}
+})

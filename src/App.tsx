@@ -25,7 +25,6 @@ export type TaskType = {
 }
 
 function App() {
-
     const todoListID_1 = v1()
     const todoListID_2 = v1()
 
@@ -135,7 +134,7 @@ function App() {
             </AppBar>
             <Container fixed>
                 <Grid container className={"addTdlGrid"}>
-                    <Input callback={addTodoList}/>
+                    <Input addItem={addTodoList}/>
                 </Grid>
                 <Grid container spacing={5} className={"tdlsGrid"}>
                     { tdlComponents }

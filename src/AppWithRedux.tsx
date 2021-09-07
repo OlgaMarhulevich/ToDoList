@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import './App.css';
 import {Todolist} from './components/Todolist/Todolist';
 import {Input} from "./components/Input/Input";
@@ -14,71 +14,59 @@ import {
     removeTodoListAC
 } from "./components/store/todoListReducer";
 
+//TYPES
 export type FilterValuesType = "all" | "active" | "completed";
-
 export type TodoListType = {
     id: string
     title: string
     filter: FilterValuesType
 }
-
 export type TasksStateType = {
     [id: string]: Array<TaskType>
 }
-
 export type TaskType = {
     id: string
     title: string
     isDone: boolean
 }
 
-function App() {
+//COMPONENT
+function AppWithRedux() {
     //useSelector
-    debugger
     const todoLists = useSelector<AppStateType, Array<TodoListType>>(state => state.todoLists)
     const tasks = useSelector<AppStateType, TasksStateType>(state => state.tasks)
     //useDispatch
     const dispatch = useDispatch()
 
-    //TASKS
-    const addTask = (title: string, todoListID: string) => {
+    //TASKS functions
+    const addTask = useCallback((title: string, todoListID: string) => {
         dispatch(addTaskAC(todoListID, title))
-    }
-    const removeTask = (taskID: string, todoListID: string) => {
+    }, [dispatch])
+    const removeTask = useCallback((taskID: string, todoListID: string) => {
         dispatch(removeTaskAC(todoListID, taskID))
-    }
-    const changeTaskStatus = (isDone: boolean, taskID: string, todoListID: string) => {
+    }, [dispatch])
+    const changeTaskStatus = useCallback((isDone: boolean, taskID: string, todoListID: string) => {
         dispatch(changeTaskStatusAC(todoListID, taskID, isDone))
-    }
-    const changeTaskTitle = (title: string, taskID: string, todoListID: string) => {
+    }, [dispatch])
+    const changeTaskTitle = useCallback((title: string, taskID: string, todoListID: string) => {
         dispatch(changeTaskTitleAC(todoListID, taskID, title))
-    }
+    }, [dispatch])
 
-    //TODOLISTS
-    const addTodoList = (title: string) => {
+    //TODOLISTS functions
+    const addTodoList = useCallback((title: string) => {
         dispatch(addTodoListAC(title))
-    }
-    const removeTodoList = (todoListID: string) => {
+    }, [dispatch])
+    const removeTodoList = useCallback((todoListID: string) => {
         dispatch(removeTodoListAC(todoListID))
-    }
-    const changeTodoListFilter = (filter: FilterValuesType, todoListID: string) => {
+    }, [dispatch])
+    const changeTodoListFilter = useCallback((filter: FilterValuesType, todoListID: string) => {
         dispatch(changeTodoListFilterAC(filter, todoListID))
-    }
-    const changeTodoListTitle = (title: string, todoListID: string) => {
+    }, [dispatch])
+    const changeTodoListTitle = useCallback((title: string, todoListID: string) => {
         dispatch(changeTodoListTitleAC(title, todoListID))
-    }
+    }, [dispatch])
 
-    const getTasksForTodoList = (tdl: TodoListType) => {
-        switch (tdl.filter) {
-            case 'active':
-                return tasks[tdl.id].filter(t => !t.isDone)
-            case 'completed':
-                return tasks[tdl.id].filter(t => t.isDone)
-            default:
-                return tasks[tdl.id]
-        }
-    }
-debugger
+    //map TodoList
     const tdlComponents = todoLists.map(tdl =>
         <Grid item key={tdl.id}>
             <Paper elevation={5} className={"tdl"}>
@@ -87,7 +75,7 @@ debugger
                     id={tdl.id}
                     title={tdl.title}
                     filter={tdl.filter}
-                    tasks={getTasksForTodoList(tdl)}
+                    tasks={tasks[tdl.id]}
                     removeTask={removeTask}
                     addTask={addTask}
                     changeTaskStatus={changeTaskStatus}
@@ -97,8 +85,9 @@ debugger
                     changeTaskTitle={changeTaskTitle}/>
             </Paper>
         </Grid>
-        )
+    )
 
+    //JSX
     return (
         <>
             <AppBar position="static">
@@ -114,7 +103,7 @@ debugger
             </AppBar>
             <Container fixed>
                 <Grid container className={"addTdlGrid"}>
-                    <Input callback={addTodoList}/>
+                    <Input addItem={addTodoList}/>
                 </Grid>
                 <Grid container spacing={5} className={"tdlsGrid"}>
                     { tdlComponents }
@@ -124,4 +113,4 @@ debugger
     )
 }
 
-export default App;
+export default AppWithRedux;
