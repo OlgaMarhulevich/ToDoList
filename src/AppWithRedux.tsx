@@ -12,7 +12,7 @@ import {
     changeTodoListFilterAC,
     changeTodoListTitleAC,
     removeTodoListAC
-} from "./components/store/todoListReducer";
+} from "./components/store/todoListsReducer";
 
 //TYPES
 export type FilterValuesType = "all" | "active" | "completed";

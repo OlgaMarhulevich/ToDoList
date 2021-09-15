@@ -1,6 +1,6 @@
 import {TasksStateType} from "../../App";
 import {v1} from "uuid";
-import {AddTodoListAT, ADD_TODOLIST, REMOVE_TODOLIST, RemoveTodoListAT} from "./todoListReducer";
+import {AddTodoListAT, ADD_TODOLIST, REMOVE_TODOLIST, RemoveTodoListAT} from "./todoListsReducer";
 
 export const ADD_TASK = 'ADD-TASK'
 export const REMOVE_TASK = 'REMOVE-TASK'

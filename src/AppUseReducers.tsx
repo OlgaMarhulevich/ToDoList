@@ -9,8 +9,8 @@ import {
     addTodoListAC,
     changeTodoListFilterAC, changeTodoListTitleAC,
     removeTodoListAC,
-    todoListReducer
-} from "./components/store/todoListReducer";
+    todoListsReducer
+} from "./components/store/todoListsReducer";
 import {
     addTaskAC,
     changeTaskStatusAC,
@@ -31,7 +31,7 @@ function AppUseReducers() {
     const todoListID_1 = v1()
     const todoListID_2 = v1()
 
-    let [todoLists, dispatchToTodoLists] = useReducer(todoListReducer, [
+    let [todoLists, dispatchToTodoLists] = useReducer(todoListsReducer, [
         {id: todoListID_1, title: 'What to learn?', filter: 'all'},
         {id: todoListID_2, title: 'What to buy?', filter: 'all'},
     ])
