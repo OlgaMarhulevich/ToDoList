@@ -1,13 +1,12 @@
 import React, {useEffect, useState} from 'react'
 import axios from "axios";
-import {todolistAPI} from "../../api/todolist-api";
-import {tasksAPI} from "../../api/tasks-api";
+import {tasksAPI} from "../../API/tasks-api";
 
 export default {
     title: 'API/tasks'
 }
 
-const todoId = '5eae3eca-e023-4c68-b26d-828e5cf75bcd'
+const todoId = '23631781-6150-49d0-afeb-faf544fa8b06'
 
 export const GetTask = () => {
     const [state, setState] = useState<any>(null)

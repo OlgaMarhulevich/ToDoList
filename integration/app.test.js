@@ -1,4 +1,4 @@
-describe('task is done', () => {
+describe('Task is done', () => {
     it('base example, visually looks correct', async () => {
         // APIs from jest-puppeteer
         await page.goto('http://localhost:9009/iframe.html?id=todolist-task--task-is-done&viewMode=story');
@@ -8,7 +8,7 @@ describe('task is done', () => {
         expect(image).toMatchImageSnapshot();
     });
 });
-describe('task is not done', () => {
+describe('Task is not done', () => {
     it('base example, visually looks correct', async () => {
         // APIs from jest-puppeteer
         await page.goto('http://localhost:9009/iframe.html?id=todolist-task--task-is-not-done&viewMode=story');

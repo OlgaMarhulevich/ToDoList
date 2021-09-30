@@ -13,7 +13,7 @@ export default {
     },
     title: {
       defaultValue: 'Title',
-      description: 'title of task or todoList'
+      description: 'title of Task or todoList'
     }
   },
 } as ComponentMeta<typeof EditableSpan>;

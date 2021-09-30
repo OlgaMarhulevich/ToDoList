@@ -1,12 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useCallback} from 'react';
-import {FilterValuesType, TaskType} from '../../App';
 import {Input} from "../Input/Input";
 import s from './Todolist.module.css';
 import {EditableSpan} from "../EditableSpan/EditableSpan";
 import {Button, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
-import {Task} from "../task/Task";
+import { Task } from '../Task/Task';
+import {FilterValuesType} from "../../store/todoListsReducer";
+import {TaskStatuses, TaskType} from "../../API/tasks-api";
 
 //TYPES
 type PropsType = {
@@ -16,7 +17,7 @@ type PropsType = {
     tasks: Array<TaskType>
     removeTask: (taskId: string, todoListID: string) => void
     addTask: (task: string, todoListID: string) => void
-    changeTaskStatus: (isDone: boolean, id: string, todoListID: string) => void
+    changeTaskStatus: (status: TaskStatuses, id: string, todoListID: string) => void
     changeTodoListFilter: (filter: FilterValuesType, todoListID: string) => void
     removeTodoList: (todoListID: string) => void
     changeTodoListTitle: (title: string, todoListID: string) => void
@@ -28,8 +29,8 @@ export const Todolist = React.memo((props: PropsType) => {
     console.log('Task rendering')
 
     let filteredTasks = props.tasks
-    if (props.filter === 'active') filteredTasks = props.tasks.filter(t => !t.isDone)
-    if (props.filter === 'completed') filteredTasks = props.tasks.filter(t => t.isDone)
+    if (props.filter === 'active') filteredTasks = props.tasks.filter(t => t.status !== 2)
+    if (props.filter === 'completed') filteredTasks = props.tasks.filter(t => t.status === 2)
 
     //JSX
     return <div>
@@ -67,7 +68,7 @@ export const Todolist = React.memo((props: PropsType) => {
                 <Task
                     taskID={task.id}
                     taskTitle={task.title}
-                    taskIsDone={task.isDone}
+                    taskStatus={task.status}
                     todoListID={props.id}
                     removeTask={props.removeTask}
                     addTask={props.addTask}

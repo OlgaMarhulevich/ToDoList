@@ -1,8 +1,8 @@
 import React from 'react';
 import {ComponentStory, ComponentMeta} from '@storybook/react';
-
 import {Task} from './Task'
 import {action} from "@storybook/addon-actions";
+import {TaskStatuses} from "../../API/tasks-api";
 
 export default {
     title: 'TodoList/Task',
@@ -12,10 +12,10 @@ export default {
 const TaskExample: ComponentStory<typeof Task> = (args) => <Task {...args} />;
 
 const baseArgs = {
-    removeTask: action('task removed'),
-    addTask: action('task added'),
-    changeTaskStatus: action('status of task changed'),
-    changeTaskTitle: action('title of task changed')
+    removeTask: action('Task removed'),
+    addTask: action('Task added'),
+    changeTaskStatus: action('status of Task changed'),
+    changeTaskTitle: action('title of Task changed')
 }
 
 export const TaskIsDone = TaskExample.bind({});
@@ -23,7 +23,7 @@ TaskIsDone.args = {
     ...baseArgs,
     taskID: 'taskId',
     taskTitle: 'Title',
-    taskIsDone: true,
+    taskStatus: TaskStatuses.New,
     todoListID: 'todoListId'
 };
 export const TaskIsNotDone = TaskExample.bind({});
@@ -31,6 +31,6 @@ TaskIsNotDone.args = {
     ...baseArgs,
     taskID: 'taskId',
     taskTitle: 'Title',
-    taskIsDone: false,
+    taskStatus: TaskStatuses.New,
     todoListID: 'todoListId'
 };

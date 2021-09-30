@@ -1,5 +1,5 @@
-import { TasksStateType } from "../../App";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./tasksReducer";
+import { TasksStateType } from "../../old-AppWithUseState/AppWithUseState";
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "../tasksReducer";
 
 let startState: TasksStateType
 
@@ -17,7 +17,7 @@ beforeEach(() => {
         ]
     };
 })
-test('correct task should be deleted from correct array', () => {
+test('correct Task should be deleted from correct array', () => {
     const action = removeTaskAC("todolistId2", '2');
     const endState = tasksReducer(startState, action)
 
@@ -35,7 +35,7 @@ test('correct task should be deleted from correct array', () => {
 
 });
 
-test('correct task should be added to correct array', () => {
+test('correct Task should be added to correct array', () => {
     const action = addTaskAC("todolistId2", "juice");
     const endState = tasksReducer(startState, action)
 
@@ -46,7 +46,7 @@ test('correct task should be added to correct array', () => {
     expect(endState["todolistId2"][0].isDone).toBe(false);
 })
 
-test('status of specified task should be changed', () => {
+test('status of specified Task should be changed', () => {
     const action = changeTaskStatusAC("todolistId2", '2', false);
     const endState = tasksReducer(startState, action)
 
@@ -54,7 +54,7 @@ test('status of specified task should be changed', () => {
     expect(endState["todolistId2"][1].isDone).toBe(false);
 });
 
-test('title of specified task should be changed', () => {
+test('title of specified Task should be changed', () => {
     const action = changeTaskTitleAC("todolistId2", '2', "beer");
     const endState = tasksReducer(startState, action)
 

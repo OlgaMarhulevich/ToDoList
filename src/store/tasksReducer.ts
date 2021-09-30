@@ -1,6 +1,7 @@
-import {TasksStateType} from "../../App";
 import {v1} from "uuid";
+import { TasksStateType } from "../AppWithRedux";
 import {AddTodoListAT, ADD_TODOLIST, REMOVE_TODOLIST, RemoveTodoListAT} from "./todoListsReducer";
+import {TaskPriorities, TaskStatuses} from "../API/tasks-api";
 
 export const ADD_TASK = 'ADD-TASK'
 export const REMOVE_TASK = 'REMOVE-TASK'
@@ -15,7 +16,19 @@ export const tasksReducer = (state = initialState, action: ActionType): TasksSta
             return {
                 ...state,
                 [action.todoListID]: [
-                    {id: action.id, title: action.title, isDone: false},
+                    {
+                        id: action.id,
+                        title: action.title,
+                        description: '',
+                        completed: false,
+                        status: TaskStatuses.New,
+                        priority: TaskPriorities.Low,
+                        startDate: '',
+                        deadline: '',
+                        todoListId: action.todoListID,
+                        order: 0,
+                        addedDate: '',
+                    },
                     ...state[action.todoListID]
                 ]
             }
@@ -27,7 +40,7 @@ export const tasksReducer = (state = initialState, action: ActionType): TasksSta
         case CHANGE_TASK_STATUS:
             return {
                 ...state, [action.todoListID]: state[action.todoListID]
-                    .map(t => t.id === action.id ? {...t, isDone: action.isDone} : t)
+                    .map(t => t.id === action.id ? {...t, status: action.status} : t)
             }
         case CHANGE_TASK_TITLE:
             return {
@@ -76,13 +89,13 @@ export type ChangeTskStatusAT = {
     type: typeof CHANGE_TASK_STATUS
     todoListID: string
     id: string
-    isDone: boolean
+    status: TaskStatuses
 }
-export const changeTaskStatusAC = (todoListID: string, id: string, isDone: boolean): ChangeTskStatusAT => ({
+export const changeTaskStatusAC = (todoListID: string, id: string, status: TaskStatuses): ChangeTskStatusAT => ({
     type: CHANGE_TASK_STATUS,
     todoListID,
     id,
-    isDone
+    status
 })
 
 export type ChangeTskTitleAT = {
