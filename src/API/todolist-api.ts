@@ -7,7 +7,7 @@ const axiosInstance = axios.create({
         'API-KEY': 'ff96c8c6-9a67-45a6-8e7e-64655709b2bd'
     }
 })
-
+//Response types
 export type TodoListType = {
     id: string
     addedDate: string

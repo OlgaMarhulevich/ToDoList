@@ -8,6 +8,7 @@ const axiosInstance = axios.create({
     }
 })
 
+//Enum
 export enum TaskStatuses {
     New = 0,
     InProgress = 1,
@@ -21,7 +22,7 @@ export enum TaskPriorities {
     Urgently = 3,
     Later
 }
-
+//Response types
 export type TaskType = {
     description: string
     title: string
@@ -56,7 +57,8 @@ export const tasksAPI = {
     deleteTask: (todoId: string, taskId: string) => {
         return axiosInstance.delete<TaskResponseType>(`/todo-lists/${todoId}/tasks/${taskId}`)
     },
-    updateTask: (todoId: string, taskId: string, title: string) => {
-        return axiosInstance.put<TaskResponseType>(`/todo-lists/${todoId}/tasks/${taskId}`, {title})
+    updateTask: (todoId: string, taskId: string, task: TaskType) => {
+        return axiosInstance.put<TaskResponseType<{item: TaskType}>>(`/todo-lists/${todoId}/tasks/${taskId}`, {...task})
     },
 }
+
