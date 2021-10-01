@@ -2,7 +2,7 @@ import React from 'react';
 import {ComponentStory, ComponentMeta} from '@storybook/react';
 import {Task} from './Task'
 import {action} from "@storybook/addon-actions";
-import {TaskStatuses} from "../../API/tasks-api";
+import {TaskStatuses} from "../../../../API/tasks-api";
 
 export default {
     title: 'TodoList/Task',

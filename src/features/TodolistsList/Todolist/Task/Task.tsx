@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useCallback} from 'react';
 import s from './Task.module.css';
-import {EditableSpan} from "../EditableSpan/EditableSpan";
+import {EditableSpan} from "../../../../components/EditableSpan/EditableSpan";
 import {Checkbox, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
-import {TaskStatuses} from "../../API/tasks-api";
+import {TaskStatuses} from "../../../../API/tasks-api";
 
 //TYPES
 type PropsType = {

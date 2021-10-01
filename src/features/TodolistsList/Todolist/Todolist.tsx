@@ -1,15 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useCallback, useEffect} from 'react';
-import {Input} from "../Input/Input";
 import s from './Todolist.module.css';
-import {EditableSpan} from "../EditableSpan/EditableSpan";
+import {EditableSpan} from "../../../components/EditableSpan/EditableSpan";
 import {Button, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
-import {Task} from '../Task/Task';
-import {FilterValuesType} from "../../store/todoListsReducer";
-import {TaskStatuses, TaskType} from "../../API/tasks-api";
-import {setTasksTC} from "../../store/tasksReducer";
+import {Task} from './Task/Task';
+import {FilterValuesType} from "../../../store/todoListsReducer";
+import {TaskStatuses, TaskType} from "../../../API/tasks-api";
+import {setTasksTC} from "../../../store/tasksReducer";
 import {useDispatch} from "react-redux";
+import { AddItemForm } from '../../../components/AddItemForm/AddItemForm';
 
 //TYPES
 type PropsType = {
@@ -58,7 +58,7 @@ export const Todolist = React.memo((props: PropsType) => {
         </div>
 
         <div>
-            <Input addItem={useCallback((title) => {
+            <AddItemForm addItem={useCallback((title) => {
                 props.addTask(title, props.id)
             }, [props.addTask, props.id])}/>
         </div>

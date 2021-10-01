@@ -4,7 +4,7 @@ export function foo () {}
 // import '../App.css';
 // import {Todolist} from '../components/Todolist/Todolist';
 // import {v1} from 'uuid';
-// import {Input} from "../components/Input/Input";
+// import {AddItemForm} from "../components/AddItemForm/AddItemForm";
 // import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 // import {Menu} from "@material-ui/icons";
 // import {
@@ -130,7 +130,7 @@ export function foo () {}
 //             </AppBar>
 //             <Container fixed>
 //                 <Grid container className={"addTdlGrid"}>
-//                     <Input addItem={addTodoList}/>
+//                     <AddItemForm addItem={addTodoList}/>
 //                 </Grid>
 //                 <Grid container spacing={5} className={"tdlsGrid"}>
 //                     { tdlComponents }

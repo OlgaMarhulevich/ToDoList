@@ -1,20 +1,20 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import {Input} from './Input'
+import {AddItemForm} from './AddItemForm'
 import {action} from "@storybook/addon-actions";
 
 export default {
-  title: 'TodoList/Input',
-  component: Input,
+  title: 'TodoList/AddItemForm',
+  component: AddItemForm,
   argTypes: {
     addItem: {
       description: 'add item on click button'
     }
   },
-} as ComponentMeta<typeof Input>;
+} as ComponentMeta<typeof AddItemForm>;
 
-const AddItemExample: ComponentStory<typeof Input> = (args) => <Input {...args} />;
+const AddItemExample: ComponentStory<typeof AddItemForm> = (args) => <AddItemForm {...args} />;
 
 export const AddItem = AddItemExample.bind({});
 AddItem.args = {

@@ -6,8 +6,8 @@ type InputPropsType = {
     addItem: (task: string) => void
 }
 
-export const Input = React.memo((props: InputPropsType) => {
-    console.log('input rendering')
+export const AddItemForm = React.memo((props: InputPropsType) => {
+    console.log('AddItemForm rendering')
 
     let [Title, setTitle] = useState('');
     let [error, setError] = useState(false)
