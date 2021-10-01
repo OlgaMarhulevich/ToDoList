@@ -62,7 +62,7 @@ export const removeTodoListAC = (todoListID: string) => {
 export const changeTodoListFilterAC = (filter: FilterValuesType, todoListID: string) => {
     return {type: CHANGE_TODOLIST_FILTER, filter, todoListID} as const
 }
-export const changeTodoListTitleAC = (title: string, todoListID: string) => {
+export const changeTodoListTitleAC = (todoListID: string, title: string) => {
     return {type: CHANGE_TODOLIST_TITLE, title, todoListID} as const
 }
 export const setTodoListsAC = (todos: Array<TodoListType>) => {
@@ -87,7 +87,9 @@ export const removeTodoListTC = (todoId: string): AppThunkCreatorsType => (dispa
 }
 
 export const changeTodoListTitleTC = (todoId: string, title: string): AppThunkCreatorsType => (dispatch) => {
-    todolistAPI.updateTodo(todoId, title).then(res => {
+    todolistAPI.updateTodo(todoId, title)
+        .then(res => {
+            console.log(res)
         res.data.resultCode === 0 ? dispatch(changeTodoListTitleAC(todoId, title)) : alert(res.data.messages[0])
     })
 }

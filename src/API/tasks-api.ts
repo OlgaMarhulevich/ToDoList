@@ -61,4 +61,3 @@ export const tasksAPI = {
         return axiosInstance.put<TaskResponseType<{item: TaskType}>>(`/todo-lists/${todoId}/tasks/${taskId}`, {...task})
     },
 }
-

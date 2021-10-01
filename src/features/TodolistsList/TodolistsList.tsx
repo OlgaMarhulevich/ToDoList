@@ -15,7 +15,6 @@ import {Todolist} from "./Todolist/Todolist";
 import {useCallback, useEffect} from "react";
 import {AddItemForm} from "../../components/AddItemForm/AddItemForm";
 
-
 export const TodolistsList: React.FC = () => {
     //useSelector
     const todoLists = useSelector<AppStateType, Array<TodoListDomainType>>(state => state.todoLists)
@@ -52,7 +51,7 @@ export const TodolistsList: React.FC = () => {
         dispatch(changeTodoListFilterAC(filter, todoListID))
     }, [dispatch])
     const changeTodoListTitle = useCallback((title: string, todoListID: string) => {
-        dispatch(changeTodoListTitleTC(title, todoListID))
+        dispatch(changeTodoListTitleTC(todoListID, title))
     }, [dispatch])
 
     //map TodoList

@@ -18,19 +18,7 @@ export const tasksReducer = (state = initialState, action: TasksReducerActionTyp
     switch (action.type) {
         case "TASKS/ADD-TASK":
             return {
-                ...state, [action.todoListID]: [{
-                    id: action.id,
-                    title: action.title,
-                    description: '',
-                    completed: false,
-                    status: TaskStatuses.New,
-                    priority: TaskPriorities.Low,
-                    startDate: '',
-                    deadline: '',
-                    todoListId: action.todoListID,
-                    order: 0,
-                    addedDate: '',
-                }, ...state[action.todoListID]]
+                ...state, [action.task.todoListId]: [action.task, ...state[action.task.todoListId]]
             }
         case "TASKS/REMOVE-TASK":
             return {...state, [action.todoListID]: state[action.todoListID].filter(t => t.id !== action.id)}
@@ -79,8 +67,8 @@ export type ChangeTaskStatusAT = ReturnType<typeof changeTaskStatusAC>
 export type ChangeTaskTitleAT = ReturnType<typeof changeTaskTitleAC>
 export type SetTasksAT = ReturnType<typeof setTasksAC>
 
-export const addTaskAC = (todoListID: string, title: string, taskId: string) => {
-    return {type: ADD_TASK, todoListID, id: taskId, title} as const
+export const addTaskAC = (task: TaskType) => {
+    return {type: ADD_TASK, task} as const
 }
 export const removeTaskAC = (todoListID: string, id: string) => {
     return {type: REMOVE_TASK, todoListID, id} as const
@@ -108,14 +96,15 @@ export const removeTaskTC = (todoId: string, taskId: string): AppThunkCreatorsTy
 
 export const addTaskTC = (todoId: string, title: string): AppThunkCreatorsType => (dispatch) => {
     tasksAPI.createTask(todoId, title).then(res => {
-        res.data.resultCode === 0 ? dispatch(addTaskAC(todoId, title, res.data.data.item.id)) : alert(res.data.messages[0])
+        res.data.resultCode === 0 ? dispatch(addTaskAC(res.data.data.item)) : alert(res.data.messages[0])
     })
 }
 
 export const changeTaskStatusTC = (todoListID: string, taskID: string, status: TaskStatuses): AppThunkCreatorsType => (dispatch, getState: () => AppStateType) => {
     let taskForUpdate = getState().tasks[todoListID].find(t => t.id === taskID)
+
     if (taskForUpdate) {
-        taskForUpdate = {...taskForUpdate, status}
+        taskForUpdate = {...taskForUpdate, status, }
         tasksAPI.updateTask(todoListID, taskID, taskForUpdate).then(res => {
             res.data.resultCode === 0 ? dispatch(changeTaskStatusAC(todoListID, taskID, res.data.data.item.status)) : alert(res.data.messages[0])
         })
