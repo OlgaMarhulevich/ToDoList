@@ -10,8 +10,8 @@ import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./
 import {
     addTodoListAC,
     changeTodoListFilterAC,
-    changeTodoListTitleAC, FilterValuesType,
-    removeTodoListAC, TodoListDomainType
+    changeTodoListTitleAC, FilterValuesType, getTodoLists,
+    removeTodoListAC, setTodoListsAC, TodoListDomainType
 } from "./store/todoListsReducer";
 import {todolistAPI} from "./API/todolist-api";
 import {TaskStatuses, TaskType} from './API/tasks-api';
@@ -30,7 +30,7 @@ function AppWithRedux() {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        //todolistAPI.getTodos().then(res => dispatch())
+        dispatch(getTodoLists())
     }, [])
 
     //TASKS functions
