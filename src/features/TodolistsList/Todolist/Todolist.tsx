@@ -6,17 +6,19 @@ import {Button, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 import {Task} from './Task/Task';
 import {FilterValuesType} from "../../../store/todoListsReducer";
-import {TaskStatuses, TaskType} from "../../../API/tasks-api";
+import {TaskDomainType, TaskStatuses} from "../../../API/tasks-api";
 import {setTasksTC} from "../../../store/tasksReducer";
 import {useDispatch} from "react-redux";
 import { AddItemForm } from '../../../components/AddItemForm/AddItemForm';
+import {RequestStatusType} from "../../../store/appReducer";
 
 //TYPES
 type PropsType = {
     id: string
     title: string
     filter: FilterValuesType
-    tasks: Array<TaskType>
+    tasks: Array<TaskDomainType>
+    entityStatus: RequestStatusType
     removeTask: (taskId: string, todoListID: string) => void
     addTask: (task: string, todoListID: string) => void
     changeTaskStatus: (status: TaskStatuses, id: string, todoListID: string) => void
@@ -46,7 +48,8 @@ export const Todolist = React.memo((props: PropsType) => {
             <IconButton aria-label="delete" size={"small"}
                         onClick={useCallback(() => {
                             props.removeTodoList(props.id)
-                        }, [props.removeTodoList, props.id])}>
+                        }, [props.removeTodoList, props.id])}
+                        disabled={props.entityStatus === 'loading'}>
                 <Delete/>
             </IconButton>
             <EditableSpan title={props.title}
@@ -54,13 +57,15 @@ export const Todolist = React.memo((props: PropsType) => {
                               useCallback((title) => {
                                   props.changeTodoListTitle(title, props.id)
                               }, [props.changeTodoListTitle, props.id])
-                          }/>
+                          }
+                          disabled={props.entityStatus === 'loading'}/>
         </div>
 
         <div>
             <AddItemForm addItem={useCallback((title) => {
                 props.addTask(title, props.id)
-            }, [props.addTask, props.id])}/>
+            }, [props.addTask, props.id])}
+            disabled={props.entityStatus === 'loading'}/>
         </div>
 
         <div className={s.buttons}>
@@ -90,6 +95,7 @@ export const Todolist = React.memo((props: PropsType) => {
         <ul>
             {filteredTasks.map(task =>
                 <Task
+                    disabled={task.entityStatus === 'loading'}
                     key={task.id}
                     taskID={task.id}
                     taskTitle={task.title}

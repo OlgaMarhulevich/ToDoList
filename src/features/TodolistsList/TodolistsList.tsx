@@ -68,6 +68,7 @@ export const TodolistsList: React.FC = () => {
                     <Grid item key={todo.id}>
                         <Paper elevation={5} className={"tdl"}>
                             <Todolist
+                                entityStatus={todo.entityStatus}
                                 key={todo.id}
                                 id={todo.id}
                                 title={todo.title}

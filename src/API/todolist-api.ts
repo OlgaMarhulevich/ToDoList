@@ -14,11 +14,16 @@ export type TodoListType = {
     order: number
     title: string
 }
-export type TodolistResponseType<T = {}> = {
+export type ResponseType<T = {}> = {
     resultCode: number
     messages: Array<string>
     data: T
     fieldsErrors: Array<string>
+}
+export enum ResponseStatusCode {
+    success = 0,
+    error = 1,
+    captcha = 10
 }
 
 export const todolistAPI = {
@@ -26,12 +31,12 @@ export const todolistAPI = {
         return axiosInstance.get<Array<TodoListType>>('/todo-lists')
     },
     createTodo: (title: string) => {
-        return axiosInstance.post<TodolistResponseType<{item: TodoListType}>>('/todo-lists', {title})
+        return axiosInstance.post<ResponseType<{item: TodoListType}>>('/todo-lists', {title})
     },
     deleteTodo: (tdlId: string) => {
-        return axiosInstance.delete<TodolistResponseType>(`/todo-lists/${tdlId}`)
+        return axiosInstance.delete<ResponseType>(`/todo-lists/${tdlId}`)
     },
     updateTodo: (tdlId: string, title: string) => {
-        return axiosInstance.put<TodolistResponseType>(`/todo-lists/${tdlId}`, {title})
+        return axiosInstance.put<ResponseType>(`/todo-lists/${tdlId}`, {title})
     },
 }

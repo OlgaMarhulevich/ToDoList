@@ -4,6 +4,7 @@ import {AddBox} from "@material-ui/icons";
 
 type InputPropsType = {
     addItem: (task: string) => void
+    disabled?: boolean
 }
 
 export const AddItemForm = React.memo((props: InputPropsType) => {
@@ -43,14 +44,16 @@ export const AddItemForm = React.memo((props: InputPropsType) => {
                 onKeyPress={onCtrlPress}
                 error={error}
                 helperText={error && 'Title is required!'}
-                style={{marginBottom: "10px"}}/>
+                style={{marginBottom: "10px", width: '80%'}}
+                disabled={props.disabled}/>
 
             <IconButton
                 size={"small"}
                 onClick={addTask}
                 aria-label="delete"
                 color={"primary"}
-                style={{margin: "5px"}}>
+                style={{margin: "5px"}}
+                disabled={props.disabled}>
                 <AddBox />
             </IconButton>
         </div>

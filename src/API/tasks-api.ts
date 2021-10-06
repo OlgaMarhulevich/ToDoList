@@ -1,4 +1,6 @@
 import axios from "axios";
+import { RequestStatusType } from "../store/appReducer";
+import {ResponseType} from "./todolist-api";
 
 const axiosInstance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1',
@@ -36,15 +38,13 @@ export type TaskType = {
     order: number
     addedDate: string
 }
+export type TaskDomainType = TaskType & {
+    entityStatus: RequestStatusType
+}
 export type GetTasksResponseType = {
     items: Array<TaskType>
     totalCount: number
     error: string
-}
-export type TaskResponseType<T = {}> = {
-    resultCode: number
-    messages: Array<string>
-    data: T
 }
 
 export const tasksAPI = {
@@ -52,12 +52,12 @@ export const tasksAPI = {
         return axiosInstance.get<GetTasksResponseType>(`/todo-lists/${todoId}/tasks`)
     },
     createTask: (todoId: string, title: string) => {
-        return axiosInstance.post<TaskResponseType<{item: TaskType}>>(`/todo-lists/${todoId}/tasks`, {title})
+        return axiosInstance.post<ResponseType<{item: TaskType}>>(`/todo-lists/${todoId}/tasks`, {title})
     },
     deleteTask: (todoId: string, taskId: string) => {
-        return axiosInstance.delete<TaskResponseType>(`/todo-lists/${todoId}/tasks/${taskId}`)
+        return axiosInstance.delete<ResponseType>(`/todo-lists/${todoId}/tasks/${taskId}`)
     },
     updateTask: (todoId: string, taskId: string, task: TaskType) => {
-        return axiosInstance.put<TaskResponseType<{item: TaskType}>>(`/todo-lists/${todoId}/tasks/${taskId}`, {...task})
+        return axiosInstance.put<ResponseType<{item: TaskType}>>(`/todo-lists/${todoId}/tasks/${taskId}`, {...task})
     },
 }

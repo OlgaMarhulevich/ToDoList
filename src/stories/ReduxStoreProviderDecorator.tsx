@@ -5,17 +5,19 @@ import {tasksReducer} from "../store/tasksReducer";
 import {v1} from "uuid";
 import {todoListsReducer} from "../store/todoListsReducer";
 import {TaskPriorities, TaskStatuses} from "../API/tasks-api";
+import {appReducer} from "../store/appReducer";
 
 
 const rootReducer = combineReducers({
     tasks: tasksReducer,
-    todoLists: todoListsReducer
+    todoLists: todoListsReducer,
+    app: appReducer
 })
 
 const initialGlobalState: AppStateType = {
     todoLists: [
-        {id: "todolistId1", title: "What to learn", addedDate: '', order: 0, filter: "all"},
-        {id: "todolistId2", title: "What to buy", addedDate: '', order: 0,  filter: "all"}
+        {id: "todolistId1", title: "What to learn", addedDate: '', order: 0, filter: "all", entityStatus: "idle"},
+        {id: "todolistId2", title: "What to buy", addedDate: '', order: 0,  filter: "all", entityStatus: "idle"}
     ] ,
     tasks: {
         ["todolistId1"]: [
@@ -31,6 +33,7 @@ const initialGlobalState: AppStateType = {
                 todoListId: "todolistId1",
                 order: 0,
                 addedDate: '',
+                entityStatus: "idle"
             },
             {
                 id: "taskId2",
@@ -44,6 +47,7 @@ const initialGlobalState: AppStateType = {
                 todoListId: "todolistId1",
                 order: 0,
                 addedDate: '',
+                entityStatus: "idle"
             },
         ],
         ["todolistId2"]: [
@@ -59,6 +63,7 @@ const initialGlobalState: AppStateType = {
                 todoListId: "todolistId2",
                 order: 0,
                 addedDate: '',
+                entityStatus: "idle"
             },
             {
                 id: "taskId1",
@@ -72,8 +77,13 @@ const initialGlobalState: AppStateType = {
                 todoListId: "todolistId2",
                 order: 0,
                 addedDate: '',
+                entityStatus: "idle"
             },
         ]
+    },
+    app: {
+        status: 'loading',
+        error: null
     }
 };
 

@@ -5,6 +5,7 @@ import {EditableSpan} from "../../../../components/EditableSpan/EditableSpan";
 import {Checkbox, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 import {TaskStatuses} from "../../../../API/tasks-api";
+import {RequestStatusType} from "../../../../store/appReducer";
 
 //TYPES
 type PropsType = {
@@ -12,6 +13,7 @@ type PropsType = {
     taskTitle: string
     taskStatus: number
     todoListID: string
+    disabled: boolean
     removeTask: (taskId: string, todoListID: string) => void
     addTask: (task: string, todoListID: string) => void
     changeTaskStatus: (status: TaskStatuses, id: string, todoListID: string) => void
@@ -29,14 +31,19 @@ export const Task = React.memo((props: PropsType) => {
     //JSX
     return (
         <li className={props.taskStatus === TaskStatuses.Completed ? s.doneTask : ''} key={props.taskID}>
-            <Checkbox checked={props.taskStatus === TaskStatuses.Completed}
-                      onChange={changeTaskStatus}
-                      size={"small"}
-                      color="primary"/>
-            <EditableSpan title={props.taskTitle}
-                          changeTitle={changeTaskTitle}/>
+            <Checkbox
+                checked={props.taskStatus === TaskStatuses.Completed}
+                onChange={changeTaskStatus}
+                size={"small"}
+                color="primary"
+                disabled={props.disabled}/>
 
-            <IconButton aria-label="delete" size={"small"} onClick={removeTask}>
+            <EditableSpan
+                title={props.taskTitle}
+                changeTitle={changeTaskTitle}
+                disabled={props.disabled}/>
+
+            <IconButton aria-label="delete" size={"small"} onClick={removeTask} disabled={props.disabled}>
                 <Delete/>
             </IconButton>
         </li>
