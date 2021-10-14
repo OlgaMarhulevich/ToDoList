@@ -1,7 +1,7 @@
 import {v1} from "uuid";
 import {ResponseStatusCode, todolistAPI, TodoListType} from "../API/todolist-api";
 import {AppThunkCreatorsType} from "./store";
-import {addTaskAC} from "./tasksReducer";
+import {addTaskAC, setTasksTC} from "./tasksReducer";
 import {tasksAPI} from "../API/tasks-api";
 import {RequestStatusType, setAppErrorAC, SetAppErrorAT, setAppStatusAC, SetAppStatusAT} from "./appReducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
@@ -12,6 +12,7 @@ export const CHANGE_TODOLIST_FILTER = 'TODOLISTS/CHANGE-TODOLIST-FILTER'
 export const CHANGE_TODOLIST_TITLE = 'TODOLISTS/CHANGE-TODOLIST-TITLE'
 export const SET_TODOLISTS = 'TODOLISTS/SET-TODOLISTS'
 export const SET_TODOLIST_ENTITY_STATUS = 'TODOLISTS/SET-TODOLIST-ENTITY-STATUS'
+export const CLEAR_TODOS = 'TODOLISTS/CLEAR-TODOS'
 
 export type FilterValuesType = "all" | "active" | "completed";
 
@@ -43,6 +44,8 @@ export const todoListsReducer = (state = initialState, action: TodoListReducerAc
             return action.todos.map(t => ({...t, filter: "all", entityStatus: "idle"}))
         case "TODOLISTS/SET-TODOLIST-ENTITY-STATUS":
             return state.map(t => t.id === action.todoId ? {...t, entityStatus: action.entityStatus} : t)
+        case "TODOLISTS/CLEAR-TODOS":
+            return []
         default:
             return state
     }
@@ -58,6 +61,7 @@ export type TodoListReducerActionType =
     | SetAppStatusAT
     | SetAppErrorAT
     | ChangeTodolistEntityStatusAT
+    | ClearTodosAT
 
 //AC
 export type AddTodoListAT = ReturnType<typeof addTodoListAC>
@@ -66,6 +70,7 @@ export type ChangeTodoListFilterAT = ReturnType<typeof changeTodoListFilterAC>
 export type ChangeTodoListTitleAT = ReturnType<typeof changeTodoListTitleAC>
 export type SetTodoListsAT = ReturnType<typeof setTodoListsAC>
 export type ChangeTodolistEntityStatusAT = ReturnType<typeof changeTodolistEntityStatusAC>
+export type ClearTodosAT = ReturnType<typeof clearTodosDataAC>
 
 export const addTodoListAC = (title: string) => {
     return {type: ADD_TODOLIST, title, todoListID: v1()} as const
@@ -85,6 +90,9 @@ export const setTodoListsAC = (todos: Array<TodoListType>) => {
 export const changeTodolistEntityStatusAC = (todoId: string, entityStatus: RequestStatusType) => {
     return {type: SET_TODOLIST_ENTITY_STATUS, todoId, entityStatus} as const
 }
+export const clearTodosDataAC = () => {
+    return {type: CLEAR_TODOS} as const
+}
 
 //THUNK
 export const getTodoListsTC = (): AppThunkCreatorsType => dispatch => {
@@ -93,6 +101,12 @@ export const getTodoListsTC = (): AppThunkCreatorsType => dispatch => {
         .then(res => {
             dispatch(setTodoListsAC(res.data))
             dispatch(setAppStatusAC('succeeded'))
+            return res.data
+        })
+        .then(todos => {
+            todos.forEach(todo => {
+                dispatch(setTasksTC(todo.id))
+            })
         })
         .catch(error => {
             handleServerNetworkError(error, dispatch)

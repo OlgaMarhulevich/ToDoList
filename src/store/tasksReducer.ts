@@ -5,7 +5,7 @@ import {
     REMOVE_TODOLIST,
     RemoveTodoListAT,
     SetTodoListsAT,
-    changeTodolistEntityStatusAC, SET_TODOLIST_ENTITY_STATUS
+    changeTodolistEntityStatusAC, SET_TODOLIST_ENTITY_STATUS, ClearTodosAT
 } from "./todoListsReducer";
 import {TaskDomainType, TaskPriorities, tasksAPI, TaskStatuses, TaskType} from "../API/tasks-api";
 import {AppStateType, AppThunkCreatorsType} from "./store";
@@ -29,7 +29,8 @@ export const tasksReducer = (state = initialState, action: TasksReducerActionTyp
     switch (action.type) {
         case "TASKS/ADD-TASK":
             return {
-                ...state, [action.task.todoListId]: [{...action.task, entityStatus: 'idle'}, ...state[action.task.todoListId]]
+                ...state,
+                [action.task.todoListId]: [{...action.task, entityStatus: 'idle'}, ...state[action.task.todoListId]]
             }
         case "TASKS/REMOVE-TASK":
             return {...state, [action.todoListID]: state[action.todoListID].filter(t => t.id !== action.id)}
@@ -60,6 +61,8 @@ export const tasksReducer = (state = initialState, action: TasksReducerActionTyp
                 ...state, [action.todoId]:
                     state[action.todoId].map(t => t.id === action.id ? {...t, entityStatus: action.entityStatus} : t)
             }
+        case "TODOLISTS/CLEAR-TODOS":
+            return {}
         default:
             return state
     }
@@ -78,6 +81,7 @@ export type TasksReducerActionType =
     | SetAppStatusAT
     | SetAppErrorAT
     | ChangeTaskEntityStatusAT
+    | ClearTodosAT
 
 //AC
 export type AddTaskAT = ReturnType<typeof addTaskAC>

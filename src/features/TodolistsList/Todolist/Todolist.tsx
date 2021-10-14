@@ -9,7 +9,7 @@ import {FilterValuesType} from "../../../store/todoListsReducer";
 import {TaskDomainType, TaskStatuses} from "../../../API/tasks-api";
 import {setTasksTC} from "../../../store/tasksReducer";
 import {useDispatch} from "react-redux";
-import { AddItemForm } from '../../../components/AddItemForm/AddItemForm';
+import {AddItemForm} from '../../../components/AddItemForm/AddItemForm';
 import {RequestStatusType} from "../../../store/appReducer";
 
 //TYPES
@@ -31,12 +31,6 @@ type PropsType = {
 //COMPONENT
 export const Todolist = React.memo((props: PropsType) => {
     console.log('Todolist rendering')
-
-    const dispatch = useDispatch()
-
-    useEffect(() => {
-        dispatch(setTasksTC(props.id))
-    }, [])
 
     let filteredTasks = props.tasks
     if (props.filter === 'active') filteredTasks = props.tasks.filter(t => t.status !== 2)
@@ -65,7 +59,7 @@ export const Todolist = React.memo((props: PropsType) => {
             <AddItemForm addItem={useCallback((title) => {
                 props.addTask(title, props.id)
             }, [props.addTask, props.id])}
-            disabled={props.entityStatus === 'loading'}/>
+                         disabled={props.entityStatus === 'loading'}/>
         </div>
 
         <div className={s.buttons}>
@@ -91,7 +85,6 @@ export const Todolist = React.memo((props: PropsType) => {
                 variant={"contained"}
                 color={props.filter === "completed" ? "secondary" : "primary"}>Completed</Button>
         </div>
-
         <ul>
             {filteredTasks.map(task =>
                 <Task

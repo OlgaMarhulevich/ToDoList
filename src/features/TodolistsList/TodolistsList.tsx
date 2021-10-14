@@ -14,15 +14,18 @@ import {useDispatch, useSelector} from "react-redux";
 import {Todolist} from "./Todolist/Todolist";
 import {useCallback, useEffect} from "react";
 import {AddItemForm} from "../../components/AddItemForm/AddItemForm";
+import {Redirect} from "react-router-dom";
 
 export const TodolistsList: React.FC = () => {
     //useSelector
     const todoLists = useSelector<AppStateType, Array<TodoListDomainType>>(state => state.todoLists)
     const tasks = useSelector<AppStateType, TasksStateType>(state => state.tasks)
+    const isLogged = useSelector<AppStateType, boolean>(state => state.auth.isLoggedIn)
     //useDispatch
     const dispatch = useDispatch()
 
     useEffect(() => {
+        if (!isLogged) return
         dispatch(getTodoListsTC())
     }, [])
 
@@ -54,10 +57,8 @@ export const TodolistsList: React.FC = () => {
         dispatch(changeTodoListTitleTC(todoListID, title))
     }, [dispatch])
 
-    //map TodoList
+    if(!isLogged) return <Redirect to={'/login'}/>
 
-
-    //JSX
     return (
         <>
             <Grid container className={"addTdlGrid"}>

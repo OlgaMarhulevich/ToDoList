@@ -1,14 +1,6 @@
 import axios from "axios";
 import { RequestStatusType } from "../store/appReducer";
-import {ResponseType} from "./todolist-api";
-
-const axiosInstance = axios.create({
-    baseURL: 'https://social-network.samuraijs.com/api/1.1',
-    withCredentials: true,
-    headers: {
-        'API-KEY': 'ff96c8c6-9a67-45a6-8e7e-64655709b2bd'
-    }
-})
+import {axiosInstance, ResponseType} from "./todolist-api";
 
 //Enum
 export enum TaskStatuses {
