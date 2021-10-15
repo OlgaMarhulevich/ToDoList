@@ -16,17 +16,14 @@ function Header() {
     return <>
         <AppBar position="static">
             <Toolbar className={"appBar"}>
-                <IconButton color="inherit" aria-label="menu">
-                    <Menu/>
-                </IconButton>
-                <Typography variant="h6">
+                <Typography color={'inherit'} variant="h6">
                     TodoLists
                 </Typography>
                 <Button
                     variant="outlined"
                     color={"inherit"}
                     style={{backgroundColor: 'rgba(255,255,255,0.11)'}}
-                    onClick={() => { dispatch(logoutTC()) }}>
+                    onClick={() => { if (isLoggedIn) dispatch(logoutTC()) }}>
                     {isLoggedIn ? 'Log out' : 'Log in'}
                 </Button>
             </Toolbar>

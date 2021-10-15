@@ -1,12 +1,14 @@
 import {Provider} from "react-redux";
 import {AppStateType} from "../store/store";
-import {combineReducers, createStore} from "redux";
+import {applyMiddleware, combineReducers, createStore} from "redux";
 import {tasksReducer} from "../store/tasksReducer";
 import {v1} from "uuid";
 import {todoListsReducer} from "../store/todoListsReducer";
 import {TaskPriorities, TaskStatuses} from "../API/tasks-api";
 import {appReducer} from "../store/appReducer";
 import {authReducer} from "../store/authReducer";
+import thunkMiddleware from "redux-thunk";
+import {HashRouter} from "react-router-dom";
 
 
 const rootReducer = combineReducers({
@@ -19,8 +21,8 @@ const rootReducer = combineReducers({
 const initialGlobalState: AppStateType = {
     todoLists: [
         {id: "todolistId1", title: "What to learn", addedDate: '', order: 0, filter: "all", entityStatus: "idle"},
-        {id: "todolistId2", title: "What to buy", addedDate: '', order: 0,  filter: "all", entityStatus: "idle"}
-    ] ,
+        {id: "todolistId2", title: "What to buy", addedDate: '', order: 0, filter: "all", entityStatus: "idle"}
+    ],
     tasks: {
         ["todolistId1"]: [
             {
@@ -93,9 +95,11 @@ const initialGlobalState: AppStateType = {
     },
 };
 
-export const storyBookStore = createStore(rootReducer, initialGlobalState);
+export const storyBookStore = createStore(rootReducer, initialGlobalState, applyMiddleware(thunkMiddleware));
 
 export const ReduxStoreProviderDecorator = (storyFn: any) => (
-    <Provider
-        store={storyBookStore}>{storyFn()}
-    </Provider>)
+    <HashRouter>
+        <Provider
+            store={storyBookStore}>{storyFn()}
+        </Provider>
+    </HashRouter>)

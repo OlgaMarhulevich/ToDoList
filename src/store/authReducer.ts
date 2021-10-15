@@ -1,51 +1,52 @@
-import {AppThunkCreatorsType} from "./store";
+import React, {Dispatch} from "react";
+import {AppDispatch} from "./store";
 import {authAPI, LoginParamsType} from "../API/auth-api";
-import {SetAppErrorAT, setAppInitializingAC, SetAppInitializingAT, setAppStatusAC, SetAppStatusAT} from "./appReducer";
 import {tasksAPI, TaskType} from "../API/tasks-api";
 import {ResponseStatusCode} from "../API/todolist-api";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 import {addTaskAC} from "./tasksReducer";
 import {clearTodosDataAC} from "./todoListsReducer";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {setAppInitializingAC, setAppStatusAC} from "./appReducer";
 
 const initialState = {
     isLoggedIn: false
 }
 
-type InitialStateType = typeof initialState
-
-export const authReducer = (state: InitialStateType = initialState, action: AuthActionsType): InitialStateType => {
-    switch (action.type) {
-        case 'LOGIN/SET-IS-LOGGED-IN':
-            return {...state, isLoggedIn: action.value}
-        default:
-            return state
+const slice = createSlice({
+    name: 'auth',
+    initialState: initialState,
+    reducers: {
+        setIsLoggedInAC(state, action: PayloadAction<{ value: boolean }>) {
+            state.isLoggedIn = action.payload.value
+        }
     }
-}
+})
 
-export type AuthActionsType = ReturnType<typeof setIsLoggedInAC> | SetAppStatusAT | SetAppErrorAT | SetAppInitializingAT
+export const authReducer = slice.reducer
+export const {setIsLoggedInAC} = slice.actions
 
-export const setIsLoggedInAC = (value: boolean) => ({type: 'LOGIN/SET-IS-LOGGED-IN', value} as const)
-
-export const loginTC = (data: LoginParamsType): AppThunkCreatorsType => dispatch => {
-    dispatch(setAppStatusAC('loading'))
+//thunk
+export const loginTC = (data: LoginParamsType) => (dispatch: AppDispatch) => {
+    dispatch(setAppStatusAC({status: 'loading'}))
     authAPI.login(data)
         .then(res => {
             if (res.data.resultCode === ResponseStatusCode.success) {
-                dispatch(setIsLoggedInAC(true))
-                dispatch(setAppStatusAC('succeeded'))
+                dispatch(setIsLoggedInAC({value: true}))
+                dispatch(setAppStatusAC({status: 'succeeded'}))
             } else {
                 handleServerAppError<{ id: number, email: string, login: string }>(res.data, dispatch)
             }
         })
         .catch(error => handleServerNetworkError(error, dispatch))
 }
-export const logoutTC = (): AppThunkCreatorsType => dispatch => {
-    dispatch(setAppStatusAC('loading'))
+export const logoutTC = () => (dispatch: AppDispatch) => {
+    dispatch(setAppStatusAC({status: 'loading'}))
     authAPI.logout()
         .then(res => {
             if (res.data.resultCode === ResponseStatusCode.success) {
-                dispatch(setIsLoggedInAC(false))
-                dispatch(setAppStatusAC('succeeded'))
+                dispatch(setIsLoggedInAC({value: false}))
+                dispatch(setAppStatusAC({status: 'succeeded'}))
                 dispatch(clearTodosDataAC())
             } else {
                 handleServerAppError<{}>(res.data, dispatch)
@@ -53,16 +54,20 @@ export const logoutTC = (): AppThunkCreatorsType => dispatch => {
         })
         .catch(error => handleServerNetworkError(error, dispatch))
 }
-export const initializeAppTC = (): AppThunkCreatorsType => dispatch => {
+export const initializeAppTC = () => (dispatch: Dispatch<any>) => {
     authAPI.me()
         .then(res => {
-            if (res.data.resultCode === ResponseStatusCode.success) {
-                dispatch(setIsLoggedInAC(true))
-                dispatch(setAppStatusAC('succeeded'))
+            if (res.data.resultCode === 0) {
+                dispatch(setIsLoggedInAC({value: true}));
             } else {
-                handleServerAppError<{ id: number, email: string, login: string }>(res.data, dispatch)
+                dispatch(setIsLoggedInAC({value: false}));
+                handleServerAppError(res.data, dispatch);
             }
         })
-        .catch(error => handleServerNetworkError(error, dispatch))
-        .finally(() => dispatch(setAppInitializingAC(true)))
+        .catch((error) => {
+            handleServerNetworkError(error, dispatch)
+        })
+        .finally(() =>
+            dispatch(setAppInitializingAC({value: true})))
 }
+

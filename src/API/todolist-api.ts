@@ -1,4 +1,5 @@
 import axios from "axios";
+import {RequestStatusType} from "../store/appReducer";
 
 export const axiosInstance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1',
@@ -7,6 +8,12 @@ export const axiosInstance = axios.create({
         'API-KEY': 'ff96c8c6-9a67-45a6-8e7e-64655709b2bd'
     }
 })
+
+export type FilterValuesType = "all" | "active" | "completed";
+export type TodoListDomainType = TodoListType & {
+    filter: FilterValuesType
+    entityStatus: RequestStatusType
+}
 //Response types
 export type TodoListType = {
     id: string

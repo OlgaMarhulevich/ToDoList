@@ -11,10 +11,10 @@ import {AppStateType} from "../store/store";
 import {Redirect, Route, Switch} from "react-router-dom";
 import {Login} from "../features/Login/Login";
 import Header from "../features/Header/Header";
-import {initializeAppTC} from "../store/authReducer";
 import { Spin } from 'antd';
+import { initializeAppTC } from '../store/authReducer';
 
-function App() {
+function App({demo = false}) {
     const error = useSelector<AppStateType, string | null>(state => state.app.error)
     const isInitialized = useSelector<AppStateType, boolean>(state => state.app.isInitialized)
 
@@ -35,7 +35,7 @@ function App() {
 
         <Container fixed>
             <Switch>
-                <Route exact path={'/'} render={() => <TodolistsList/>}/>
+                <Route exact path={'/'} render={() => <TodolistsList demo={demo}/>}/>
                 <Route path={'/login'} render={() => <Login/>}/>
                 <Route path={'/404'} render={() => <div style={{width: '100%', height: '100vh', display: 'flex', justifyContent: 'center', marginTop: '100px'}}><h1>404: PAGE NOT FOUND</h1></div>}/>
                 <Redirect to={'/404'}/>

@@ -5,9 +5,8 @@ import {AppBar, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@
 import {
     addTodoListTC, changeTodoListFilterAC,
     changeTodoListTitleTC,
-    FilterValuesType,
     getTodoListsTC,
-    removeTodoListTC, TodoListDomainType
+    removeTodoListTC,
 } from "../../store/todoListsReducer";
 import {TaskStatuses} from "../../API/tasks-api";
 import {useDispatch, useSelector} from "react-redux";
@@ -15,8 +14,13 @@ import {Todolist} from "./Todolist/Todolist";
 import {useCallback, useEffect} from "react";
 import {AddItemForm} from "../../components/AddItemForm/AddItemForm";
 import {Redirect} from "react-router-dom";
+import {FilterValuesType, TodoListDomainType} from "../../API/todolist-api";
 
-export const TodolistsList: React.FC = () => {
+type TodoListListPropsType = {
+    demo?: boolean
+}
+
+export const TodolistsList: React.FC<TodoListListPropsType> = ({demo = false}) => {
     //useSelector
     const todoLists = useSelector<AppStateType, Array<TodoListDomainType>>(state => state.todoLists)
     const tasks = useSelector<AppStateType, TasksStateType>(state => state.tasks)
@@ -25,7 +29,7 @@ export const TodolistsList: React.FC = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if (!isLogged) return
+        if (!isLogged || demo) return
         dispatch(getTodoListsTC())
     }, [])
 
@@ -51,7 +55,7 @@ export const TodolistsList: React.FC = () => {
         dispatch(removeTodoListTC(todoListID))
     }, [dispatch])
     const changeTodoListFilter = useCallback((filter: FilterValuesType, todoListID: string) => {
-        dispatch(changeTodoListFilterAC(filter, todoListID))
+        dispatch(changeTodoListFilterAC({filter: filter, todoListID: todoListID}))
     }, [dispatch])
     const changeTodoListTitle = useCallback((title: string, todoListID: string) => {
         dispatch(changeTodoListTitleTC(todoListID, title))

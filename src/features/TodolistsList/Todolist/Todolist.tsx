@@ -5,12 +5,12 @@ import {EditableSpan} from "../../../components/EditableSpan/EditableSpan";
 import {Button, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 import {Task} from './Task/Task';
-import {FilterValuesType} from "../../../store/todoListsReducer";
 import {TaskDomainType, TaskStatuses} from "../../../API/tasks-api";
 import {setTasksTC} from "../../../store/tasksReducer";
 import {useDispatch} from "react-redux";
 import {AddItemForm} from '../../../components/AddItemForm/AddItemForm';
 import {RequestStatusType} from "../../../store/appReducer";
+import {FilterValuesType} from "../../../API/todolist-api";
 
 //TYPES
 type PropsType = {
@@ -36,7 +36,6 @@ export const Todolist = React.memo((props: PropsType) => {
     if (props.filter === 'active') filteredTasks = props.tasks.filter(t => t.status !== 2)
     if (props.filter === 'completed') filteredTasks = props.tasks.filter(t => t.status === 2)
 
-    //JSX
     return <div>
         <div className={s.title}>
             <IconButton aria-label="delete" size={"small"}

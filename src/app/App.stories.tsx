@@ -11,6 +11,6 @@ export default {
     decorators: [ReduxStoreProviderDecorator]
 } as ComponentMeta<typeof App>;
 
-const AppWithReduxExample: ComponentStory<typeof App> = (args) => <App   />
+const AppWithReduxExample: ComponentStory<typeof App> = () => <App demo/>
 
 export const AppWithReduxComponent = AppWithReduxExample.bind({});

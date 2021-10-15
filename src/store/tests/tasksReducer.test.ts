@@ -23,7 +23,8 @@ beforeEach(() => {
                 description: '',
                 deadline: '',
                 completed: false,
-                todoListId: 'todolistId1'
+                todoListId: 'todolistId1',
+                entityStatus: "idle"
             },
             {
                 id: "2",
@@ -36,7 +37,8 @@ beforeEach(() => {
                 description: '',
                 deadline: '',
                 completed: false,
-                todoListId: 'todolistId1'
+                todoListId: 'todolistId1',
+                entityStatus: "idle"
             },
             {
                 id: "3",
@@ -49,7 +51,8 @@ beforeEach(() => {
                 description: '',
                 deadline: '',
                 completed: false,
-                todoListId: 'todolistId1'
+                todoListId: 'todolistId1',
+                entityStatus: "idle"
             }
         ],
         "todolistId2": [
@@ -64,7 +67,8 @@ beforeEach(() => {
                 description: '',
                 deadline: '',
                 completed: false,
-                todoListId: 'todolistId2'
+                todoListId: 'todolistId2',
+                entityStatus: "idle"
             },
             {
                 id: "2",
@@ -77,7 +81,8 @@ beforeEach(() => {
                 description: '',
                 deadline: '',
                 completed: false,
-                todoListId: 'todolistId2'
+                todoListId: 'todolistId2',
+                entityStatus: "idle"
             },
             {
                 id: "3",
@@ -90,13 +95,14 @@ beforeEach(() => {
                 description: '',
                 deadline: '',
                 completed: false,
-                todoListId: 'todolistId2'
+                todoListId: 'todolistId2',
+                entityStatus: "idle"
             }
         ]
     };
 })
 test('correct Task should be deleted from correct array', () => {
-    const action = removeTaskAC("todolistId2", '2');
+    const action = removeTaskAC({todoListID: "todolistId2", taskId: '2'});
     const endState = tasksReducer(startState, action)
 
     expect(endState).toEqual( {
@@ -112,7 +118,8 @@ test('correct Task should be deleted from correct array', () => {
                 description: '',
                 deadline: '',
                 completed: false,
-                todoListId: 'todolistId1'
+                todoListId: 'todolistId1',
+                entityStatus: "idle"
             },
             {
                 id: "2",
@@ -125,7 +132,8 @@ test('correct Task should be deleted from correct array', () => {
                 description: '',
                 deadline: '',
                 completed: false,
-                todoListId: 'todolistId1'
+                todoListId: 'todolistId1',
+                entityStatus: "idle"
             },
             {
                 id: "3",
@@ -138,7 +146,8 @@ test('correct Task should be deleted from correct array', () => {
                 description: '',
                 deadline: '',
                 completed: false,
-                todoListId: 'todolistId1'
+                todoListId: 'todolistId1',
+                entityStatus: "idle"
             }
         ],
         "todolistId2": [
@@ -153,7 +162,8 @@ test('correct Task should be deleted from correct array', () => {
                 description: '',
                 deadline: '',
                 completed: false,
-                todoListId: 'todolistId2'
+                todoListId: 'todolistId2',
+                entityStatus: "idle"
             },
             {
                 id: "3",
@@ -166,7 +176,8 @@ test('correct Task should be deleted from correct array', () => {
                 description: '',
                 deadline: '',
                 completed: false,
-                todoListId: 'todolistId2'
+                todoListId: 'todolistId2',
+                entityStatus: "idle"
             }
         ]
     });
@@ -174,7 +185,19 @@ test('correct Task should be deleted from correct array', () => {
 });
 
 test('correct Task should be added to correct array', () => {
-    const action = addTaskAC("todolistId2", "juice", '123');
+    const action = addTaskAC({task: {
+            id: "123",
+            title: "juice",
+            status: 0,
+            startDate: '',
+            order: 0,
+            addedDate: '',
+            priority: 1,
+            description: '',
+            deadline: '',
+            completed: false,
+            todoListId: 'todolistId2'
+        }});
     const endState = tasksReducer(startState, action)
 
     expect(endState["todolistId2"].length).toBe(4);
@@ -184,7 +207,7 @@ test('correct Task should be added to correct array', () => {
 })
 
 test('status of specified Task should be changed', () => {
-    const action = changeTaskStatusAC("todolistId2", '2', 1);
+    const action = changeTaskStatusAC({todoListID: "todolistId2", taskId: '2', status: 1});
     const endState = tasksReducer(startState, action)
 
     expect(endState["todolistId1"][1].status).toBe(0);
@@ -192,7 +215,7 @@ test('status of specified Task should be changed', () => {
 });
 
 test('title of specified Task should be changed', () => {
-    const action = changeTaskTitleAC("todolistId2", '2', "beer");
+    const action = changeTaskTitleAC({todoListID: "todolistId2", taskId: '2', title: "beer"});
     const endState = tasksReducer(startState, action)
 
     expect(endState["todolistId1"][1].title).toBe('JS');

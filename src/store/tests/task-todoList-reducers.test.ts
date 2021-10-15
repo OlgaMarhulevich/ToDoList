@@ -1,5 +1,6 @@
+import { TodoListDomainType } from "../../API/todolist-api";
 import {tasksReducer, TasksStateType} from "../tasksReducer";
-import {addTodoListAC, removeTodoListAC, TodoListDomainType, todoListsReducer} from "../todoListsReducer";
+import {addTodoListAC, removeTodoListAC, todoListsReducer} from "../todoListsReducer";
 
 let startState: TasksStateType
 
@@ -17,7 +18,8 @@ beforeEach(() => {
                 description: '',
                 priority: 1,
                 addedDate: '',
-                startDate: ''
+                startDate: '',
+                entityStatus: "idle"
             },
             {
                 id: "2",
@@ -30,7 +32,8 @@ beforeEach(() => {
                 description: '',
                 priority: 1,
                 addedDate: '',
-                startDate: ''
+                startDate: '',
+                entityStatus: "idle"
             },
             {
                 id: "3",
@@ -43,7 +46,8 @@ beforeEach(() => {
                 description: '',
                 priority: 1,
                 addedDate: '',
-                startDate: ''
+                startDate: '',
+                entityStatus: "idle"
             }
         ],
         "todolistId2": [
@@ -58,7 +62,8 @@ beforeEach(() => {
                 description: '',
                 priority: 1,
                 addedDate: '',
-                startDate: ''
+                startDate: '',
+                entityStatus: "idle"
             },
             {
                 id: "2",
@@ -71,7 +76,8 @@ beforeEach(() => {
                 description: '',
                 priority: 1,
                 addedDate: '',
-                startDate: ''
+                startDate: '',
+                entityStatus: "idle"
             },
             {
                 id: "3",
@@ -84,14 +90,20 @@ beforeEach(() => {
                 description: '',
                 priority: 1,
                 addedDate: '',
-                startDate: ''
+                startDate: '',
+                entityStatus: "idle"
             }
         ]
     };
 })
 
 test('new array should be added when new todolist is added', () => {
-    const action = addTodoListAC("new todolist");
+    const action = addTodoListAC({todo: {
+            id: 'todolistId1',
+            title: 'new',
+            order: 1,
+            addedDate: ''
+        }});
     const endState = tasksReducer(startState, action)
 
     const keys = Object.keys(endState);
@@ -108,7 +120,12 @@ test('ids should be equals', () => {
     const startTasksState: TasksStateType = {};
     const startTodoListsState: Array<TodoListDomainType> = [];
 
-    const action = addTodoListAC("new todolist");
+    const action = addTodoListAC({todo: {
+            id: 'todolistId1',
+            title: 'new',
+            order: 1,
+            addedDate: ''
+        }});
 
     const endTasksState = tasksReducer(startTasksState, action)
     const endTodoListsState = todoListsReducer(startTodoListsState, action)
@@ -117,12 +134,12 @@ test('ids should be equals', () => {
     const idFromTasks = keys[0];
     const idFromTodoLists = endTodoListsState[0].id;
 
-    expect(idFromTasks).toBe(action.todoListID);
-    expect(idFromTodoLists).toBe(action.todoListID);
+    expect(idFromTasks).toBe(action.payload.todo.id);
+    expect(idFromTodoLists).toBe(action.payload.todo.id);
 });
 
 test('property with todolistId should be deleted', () => {
-    const action = removeTodoListAC("todolistId2");
+    const action = removeTodoListAC({todoListID: 'todolistId2'});
     const endState = tasksReducer(startState, action)
 
     const keys = Object.keys(endState);
